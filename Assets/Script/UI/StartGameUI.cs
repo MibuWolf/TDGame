@@ -22,6 +22,9 @@ public class StartGameUI : MonoBehaviour {
     //  流畅服务器预设
     public GameObject lc_obj;
 
+    // 当前选中的服务器
+    public GameObject sltService;
+
 	// Use this for initialization  
 	void Start () {
 
@@ -83,7 +86,7 @@ public class StartGameUI : MonoBehaviour {
     // 点击注册界面的注册按钮
     public void onClickRegisterRegisterBtn()
 	{
-		
+		// 发送消息给服务器
 	}
 
 
@@ -123,6 +126,44 @@ public class StartGameUI : MonoBehaviour {
             info.count = count;
             servicelist.AddChild(obj.transform);
         }
+    }
+
+
+    // 打开服务器列表界面
+    public void onOpenServiceList()
+    {
+        entergame.PlayForward();
+        StartCoroutine(Wait(entergame.gameObject));
+
+        service.gameObject.SetActive(true);
+        service.PlayForward();
+    }
+
+
+    //  从服务器列表中选中服务器
+    public void onSelectService(GameObject selectObj)
+    {
+        ServiceInfo selectInfo = selectObj.GetComponent<ServiceInfo>();
+
+        sltService.transform.Find("Label").GetComponent<UILabel>().text = selectInfo.name;
+        UIButton uiBtn = sltService.GetComponent<UIButton>();
+        UIButton selectBtn = selectObj.GetComponent<UIButton>();
+
+        uiBtn.normalSprite = selectBtn.normalSprite;
+        uiBtn.hoverSprite = selectBtn.hoverSprite;
+        uiBtn.pressedSprite = selectBtn.pressedSprite;
+        uiBtn.disabledSprite = selectBtn.disabledSprite;
+    }
+
+
+    // 确认选中服务器
+    public void onSureService()
+    {
+        service.PlayReverse();
+        StartCoroutine(Wait( service.gameObject ));
+
+        entergame.gameObject.SetActive(true);
+        entergame.PlayReverse();
     }
 
 
