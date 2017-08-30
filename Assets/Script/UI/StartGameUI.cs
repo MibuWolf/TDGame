@@ -8,6 +8,8 @@ public class StartGameUI : MonoBehaviour {
 	public TweenScale login;
 	public TweenScale register;
     public TweenScale service;
+    public TweenPosition entergameGO;
+    public TweenPosition selectRole;
 
     //  登陆界面角色名称
     public UILabel lb_loginName;
@@ -31,6 +33,17 @@ public class StartGameUI : MonoBehaviour {
         initServiceList();
 
     }
+
+
+    //  点击开始游戏按钮进入切换角色界面
+    public void onEnterSelectRole()
+    {
+        entergameGO.PlayForward();
+        Wait(entergameGO.gameObject);
+        selectRole.gameObject.SetActive(true);
+        selectRole.PlayForward();
+    }
+
 
     // 点击进入游戏选择用户按钮
     public void onClickUserName()
