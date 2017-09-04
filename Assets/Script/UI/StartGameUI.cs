@@ -200,7 +200,7 @@ public class StartGameUI : MonoBehaviour {
             iTween.ScaleTo(curSelectRole, new Vector3( 1.0f,1.0f,1.0f ), 0.8f);
         }
 
-        iTween.ScaleTo(obj, new Vector3(1.5f, 1.5f, 1.5f), 0.8f);
+        iTween.ScaleTo(obj, new Vector3(1.2f, 1.2f, 1.2f), 0.8f);
 
         curSelectRole = obj;
     }
