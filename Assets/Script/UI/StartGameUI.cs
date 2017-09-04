@@ -27,8 +27,19 @@ public class StartGameUI : MonoBehaviour {
     // 当前选中的服务器
     public GameObject sltService;
 
-	// Use this for initialization  
-	void Start () {
+
+    public static StartGameUI instance;
+
+    // 当前选中的角色
+    private GameObject curSelectRole;
+
+    void Awake()
+    {
+        StartGameUI.instance = this;
+    }
+
+    // Use this for initialization  
+    void Start () {
 
         initServiceList();
 
@@ -178,6 +189,22 @@ public class StartGameUI : MonoBehaviour {
         entergame.gameObject.SetActive(true);
         entergame.PlayReverse();
     }
+
+
+
+    // 选中角色回调
+    public void onRoleSelected(GameObject obj)
+    {
+        if (curSelectRole)
+        {
+            iTween.ScaleTo(curSelectRole, new Vector3( 1.0f,1.0f,1.0f ), 0.8f);
+        }
+
+        iTween.ScaleTo(obj, new Vector3(1.5f, 1.5f, 1.5f), 0.8f);
+
+        curSelectRole = obj;
+    }
+
 
 
     IEnumerator Wait( GameObject obj )  
