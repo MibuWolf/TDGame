@@ -217,6 +217,7 @@ GameObject:
   - component: {fileID: 111234970870827634}
   - component: {fileID: 136008523002280898}
   - component: {fileID: 114466017036677392}
+  - component: {fileID: 114581426368009396}
   m_Layer: 8
   m_Name: girl_roleselected
   m_TagString: Untagged
@@ -416,7 +417,7 @@ GameObject:
   - component: {fileID: 4612115298457858}
   m_Layer: 8
   m_Name: grilselected
-  m_TagString: Untagged
+  m_TagString: girl_select
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1170,8 +1171,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1501387166109492}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 482, y: 30.999998, z: 0}
-  m_LocalScale: {x: 0.999, y: 0.999, z: 0.999}
+  m_LocalPosition: {x: 439, y: 30, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4577909673525956}
   - {fileID: 4097143661268404}
@@ -1579,6 +1580,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 4097143661268404}
   speed: 1
+--- !u!114 &114581426368009396
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1348642171339774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: def4955f93376254181df0513223d02e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &136008523002280898
 CapsuleCollider:
   m_ObjectHideFlags: 1

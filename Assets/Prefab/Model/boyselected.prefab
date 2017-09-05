@@ -66,7 +66,7 @@ GameObject:
   - component: {fileID: 4823519451889918}
   m_Layer: 8
   m_Name: boyselected
-  m_TagString: Untagged
+  m_TagString: boy_select
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -642,6 +642,7 @@ GameObject:
   - component: {fileID: 111620337069047256}
   - component: {fileID: 136223495515615906}
   - component: {fileID: 114819918639223968}
+  - component: {fileID: 114832657453186806}
   m_Layer: 8
   m_Name: man_roleselected
   m_TagString: Untagged
@@ -1105,7 +1106,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1509155155188036}
   m_LocalRotation: {x: -0.70239383, y: -0.081504166, z: -0.08150405, w: 0.70239383}
-  m_LocalPosition: {x: -274, y: -72, z: -165}
+  m_LocalPosition: {x: -230, y: -72, z: -165}
   m_LocalScale: {x: 200, y: 200, z: 200}
   m_Children: []
   m_Father: {fileID: 4823519451889918}
@@ -1507,7 +1508,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1222109696704410}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 44, y: 31, z: 0}
+  m_LocalPosition: {x: 124, y: 30, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4357301736137456}
@@ -1549,7 +1550,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1814405739555392}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
-  m_LocalPosition: {x: -261.35, y: -69, z: -131}
+  m_LocalPosition: {x: -245, y: -69, z: -131}
   m_LocalScale: {x: 120, y: 120, z: 120}
   m_Children:
   - {fileID: 4202225031667084}
@@ -1667,6 +1668,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 4897552886540886}
   speed: 1
+--- !u!114 &114832657453186806
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1814405739555392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: def4955f93376254181df0513223d02e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &136223495515615906
 CapsuleCollider:
   m_ObjectHideFlags: 1

@@ -10,6 +10,7 @@ public class StartGameUI : MonoBehaviour {
     public TweenScale service;
     public TweenPosition entergameGO;
     public TweenPosition selectRole;
+    public TweenPosition changeRole;
 
     //  登陆界面角色名称
     public UILabel lb_loginName;
@@ -25,13 +26,30 @@ public class StartGameUI : MonoBehaviour {
     public GameObject lc_obj;
 
     // 当前选中的服务器
-    public GameObject sltService;
-
-
-    public static StartGameUI instance;
-
+    public GameObject sltService;    
+    
     // 当前选中的角色
     private GameObject curSelectRole;
+
+    // 当前选中要更改成的角色
+    private GameObject curChangedRole;
+
+    // 所偶选择的角色（不带台子）
+    public GameObject[] allChangeRoles;
+
+    // 选择角色界面的角色对象
+    public GameObject roleSelect;
+
+    // 选择界面新选择的角色的名称
+    public UILabel roleChangeName;
+
+    // 已选择的角色名称
+    public UILabel roleSelectName;
+
+    // 已选择的角色的等级
+    public UILabel roleLv;
+
+    public static StartGameUI instance;
 
     void Awake()
     {
@@ -195,6 +213,9 @@ public class StartGameUI : MonoBehaviour {
     // 选中角色回调
     public void onRoleSelected(GameObject obj)
     {
+        if (curSelectRole == obj)
+            return;
+
         if (curSelectRole)
         {
             iTween.ScaleTo(curSelectRole, new Vector3( 1.0f,1.0f,1.0f ), 0.8f);
@@ -203,8 +224,75 @@ public class StartGameUI : MonoBehaviour {
         iTween.ScaleTo(obj, new Vector3(1.2f, 1.2f, 1.2f), 0.8f);
 
         curSelectRole = obj;
+
+        if (!curSelectRole)
+            return;
+
+        int findIndex = -1;
+        int count = allChangeRoles.Length;
+
+        for (int i = 0; i < count; ++i )
+        {
+            if (curSelectRole.tag == allChangeRoles[i].tag)
+                findIndex = i;
+        }
+
+        if (findIndex == -1)
+            return;
+
+        curChangedRole = allChangeRoles[findIndex];
+
     }
 
+
+    // 打开选择角色界面
+    public void onOpenChangeRole()
+    {
+        selectRole.PlayReverse();
+        Wait(selectRole.gameObject);
+
+        changeRole.gameObject.SetActive(true);
+        changeRole.PlayForward();
+    }
+
+    // 返回角色界面
+    public void onReturnSelectedRole()
+    {
+        changeRole.PlayReverse();
+        Wait(changeRole.gameObject);
+
+        selectRole.gameObject.SetActive(true);
+        selectRole.PlayForward();
+    }
+
+    // 确定改变角色选择
+    public void onSureChangeRole()
+    {
+        // 更改当前选定的角色
+        if (curChangedRole)
+        {
+            GameObject oldRole = roleSelect.GetComponentInChildren<Animation>().gameObject;
+
+            if (oldRole)
+                GameObject.Destroy(oldRole);
+
+            GameObject newRole = GameObject.Instantiate(curChangedRole) as GameObject;
+
+            if (newRole)
+            {
+                newRole.transform.parent = roleSelect.transform;
+                newRole.transform.localPosition = Vector3.zero;
+                newRole.transform.localRotation = Quaternion.identity;
+                newRole.transform.localScale = new Vector3(1,1,1);
+
+                roleSelectName.text = roleChangeName.text;
+                roleLv.text = "Lv.1";
+            }
+            
+        }
+
+        onReturnSelectedRole();
+    }
 
 
     IEnumerator Wait( GameObject obj )  
