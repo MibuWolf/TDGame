@@ -69,6 +69,8 @@ public class PlayerInfo : MonoBehaviour {
         set
         {
             _name = value;
+
+            PlayerInfoChangeEvent(InfoType.Name);
         }
     }
 
@@ -217,9 +219,9 @@ public class PlayerInfo : MonoBehaviour {
     public static PlayerInfo instance;
 
     // 体力恢复时间
-    private float fTLTime = 0.0f;
+    public float fTLTime = 0.0f;
     // 历练恢复时间
-    private float fLLTime = 0.0f;
+    public float fLLTime = 0.0f;
 
     void Awake()
     {
@@ -238,10 +240,10 @@ public class PlayerInfo : MonoBehaviour {
     {
         Name = "MibuWolf";
         headPic = "头像底板女性";
-        lv = 1;
+        lv = 12;
         vip = 1;
         power = 10000;
-        exp = 5000;
+        exp = 680;
         diamonds = 100;
         coin = 1000;
         spirit = 50;
@@ -289,6 +291,11 @@ public class PlayerInfo : MonoBehaviour {
 
     public delegate void onPlayerInfoChanged( InfoType type );
     public event onPlayerInfoChanged PlayerInfoChangeEvent;
-    
+
+    public float getLevelExp()
+    {
+        return lv * 100.0f;
+    }
+
     #endregion
 }

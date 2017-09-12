@@ -17,6 +17,8 @@ public class RoleHeadUI : MonoBehaviour {
     // 添加MP
     private UIButton btnAddMP;
 
+    // 头像按钮
+    private UIButton btnHead;
 
     void Awake()
     {
@@ -26,6 +28,11 @@ public class RoleHeadUI : MonoBehaviour {
         lbMP = transform.Find("MP_con/mp/lb_mp").GetComponent<UILabel>();
         btnAddHP = transform.Find("btn_AddHp").GetComponent<UIButton>();
         btnAddMP = transform.Find("btn_AddMP").GetComponent<UIButton>();
+
+        btnHead = transform.Find("img_Head/btnHead").GetComponent<UIButton>();
+
+        EventDelegate headEvent = new EventDelegate(this, "onClickHead");
+        btnHead.onClick.Add(headEvent);
 
         PlayerInfo.instance.PlayerInfoChangeEvent += onPlayerInfpChanged;
     }
@@ -46,6 +53,13 @@ public class RoleHeadUI : MonoBehaviour {
         lbLV.text = PlayerInfo.instance.lv.ToString();
         lbHP.text = PlayerInfo.instance.spirit.ToString() + " / 100";
         lbMP.text = PlayerInfo.instance.experience.ToString() + " / 50";
+    }
+
+
+    //  点击头像
+    private void onClickHead()
+    {
+        PlayerStatusUI.instance.Show();
     }
 
 }
