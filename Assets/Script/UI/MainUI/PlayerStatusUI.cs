@@ -167,8 +167,8 @@ public class PlayerStatusUI : MonoBehaviour {
             lbVIP.text = PlayerInfo.instance.vip.ToString();
             lbName.text = PlayerInfo.instance.Name;
             lbPower.text = PlayerInfo.instance.power.ToString();
-            prograssExp.value = (float)PlayerInfo.instance.exp / PlayerInfo.instance.getLevelExp();
-            lbExp.text = PlayerInfo.instance.exp.ToString() + " / " + PlayerInfo.instance.getLevelExp().ToString();
+            prograssExp.value = (float)PlayerInfo.instance.exp / PlayerInfo.instance.getLevelExp( PlayerInfo.instance.lv );
+            lbExp.text = PlayerInfo.instance.exp.ToString() + " / " + PlayerInfo.instance.getLevelExp( PlayerInfo.instance.lv ).ToString();
             lbDiamonds.text = PlayerInfo.instance.diamonds.ToString();
             lbCoin.text = PlayerInfo.instance.coin.ToString();
             lbJS.text = PlayerInfo.instance.spirit.ToString();

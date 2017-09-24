@@ -9,10 +9,12 @@ public enum InfoType
     LV,
     Power,
     Exp,
+    HP,
     Diamonds,
     Coin,
     Spirit,
     Experience,
+    Equip,
     ALL
 }
 
@@ -37,7 +39,7 @@ public class PlayerInfo : MonoBehaviour {
     // 头像
     private string _headPic;
     // 等级
-    private int _lv;
+    private int _lv = 5;
     // VIP
     private int _vip;
     // 战斗力
@@ -52,6 +54,24 @@ public class PlayerInfo : MonoBehaviour {
     private int _spirit;
     // 历练数
     private int _experience;
+    // 血量
+    private int _hp;
+    // 头盔ID
+    private int _helmID;
+    // 项链ID
+    private int _necklaceID;
+    // 身体ID
+    private int _bodyID;
+    // 武器
+    private int _weaponID;
+    // 戒指
+    private int _ringID;
+    // 鞋子
+    private int _shoesID;
+    // 手镯
+    private int _braceletID;
+    // 翅膀
+    private int _wingID;
 
     #endregion
 
@@ -211,6 +231,163 @@ public class PlayerInfo : MonoBehaviour {
         }
     }
 
+
+    // 血量
+    public int hp
+    {
+        get
+        {
+            return _hp;
+        }
+
+        set
+        {
+            _hp = value;
+        }
+    }
+
+
+    // 头盔ID
+    public int helmID
+    {
+        get
+        {
+            return _helmID;
+        }
+
+        set
+        {
+            updataPower(_helmID, false);
+            _helmID = value;
+            updataPower(_helmID, true);
+            PlayerInfoChangeEvent(InfoType.Equip);
+        }
+    }
+
+
+    // 项链ID
+    public int necklaceID
+    {
+        get
+        {
+            return _necklaceID;
+        }
+
+        set
+        {
+            updataPower(_necklaceID, false);
+            _necklaceID = value;
+            updataPower(_necklaceID, true);
+            PlayerInfoChangeEvent(InfoType.Equip);
+        }
+    }
+
+    // 服装ID
+    public int bodyID
+    {
+        get
+        {
+            return _bodyID;
+        }
+
+        set
+        {
+            updataPower(_bodyID, false);
+            _bodyID = value;
+            updataPower(_bodyID, true);
+            PlayerInfoChangeEvent(InfoType.Equip);
+        }
+    }
+
+    // 武器ID
+    public int weaponID
+    {
+        get
+        {
+            return _weaponID;
+        }
+
+        set
+        {
+            updataPower(_weaponID, false);
+            _weaponID = value;
+            updataPower(_weaponID, true);
+            PlayerInfoChangeEvent(InfoType.Equip);
+        }
+    }
+
+
+    // 戒指ID
+    public int ringID
+    {
+        get
+        {
+            return _ringID;
+        }
+
+        set
+        {
+            updataPower(_ringID, false);
+            _ringID = value;
+            updataPower(_ringID, true);
+            PlayerInfoChangeEvent(InfoType.Equip);
+        }
+    }
+
+
+    // 翅膀ID
+    public int wingID
+    {
+        get
+        {
+            return _wingID;
+        }
+
+        set
+        {
+            updataPower(_wingID, false);
+            _wingID = value;
+            updataPower(_wingID, true);
+            PlayerInfoChangeEvent(InfoType.Equip);
+        }
+    }
+
+
+    // 鞋子
+    public int shoesID
+    {
+        get
+        {
+            return _shoesID;
+        }
+
+        set
+        {
+            updataPower(_shoesID, false);
+            _shoesID = value;
+            updataPower(_shoesID, true);
+            PlayerInfoChangeEvent(InfoType.Equip);
+        }
+    }
+
+
+    // 镯子
+    public int braceletID
+    {
+        get
+        {
+            return _braceletID;
+        }
+
+        set
+        {
+            updataPower(_braceletID, false);
+            _braceletID = value;
+            updataPower(_braceletID, true);
+            PlayerInfoChangeEvent(InfoType.Equip);
+        }
+    }
+
     #endregion
 
 
@@ -292,9 +469,38 @@ public class PlayerInfo : MonoBehaviour {
     public delegate void onPlayerInfoChanged( InfoType type );
     public event onPlayerInfoChanged PlayerInfoChangeEvent;
 
-    public float getLevelExp()
+    // 根据等级计算这个等级的经验值
+    public float getLevelExp( int level )
     {
-        return lv * 100.0f;
+        return level * 100.0f;
+    }
+
+    // 计算当前的战斗力
+    private void updataPower( int id, bool bAdd = true )
+    {
+        int basicPower = _lv * 100 + hp;
+
+        if(id > 0 )
+        {
+            Item item = ItemModel.instance.getItem(id);
+
+            if (item != null)
+            {
+                if (bAdd)
+                {
+                    basicPower += item.hp;
+                    basicPower += item.danmage;
+                }
+                else
+                {
+                    basicPower -= item.hp;
+                    basicPower -= item.danmage;
+                }
+            }
+
+        }
+
+        power = basicPower;
     }
 
     #endregion
