@@ -49,19 +49,19 @@ Shader "Unlit/Transparent Colored"
 				fixed4 color : COLOR;
 			};
 	
+			v2f o;
+
 			v2f vert (appdata_t v)
 			{
-				v2f o;
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.texcoord = v.texcoord;
 				o.color = v.color;
 				return o;
 			}
 				
-			fixed4 frag (v2f IN) : COLOR
+			fixed4 frag (v2f IN) : SV_Target
 			{
-				fixed4 col = tex2D(_MainTex, IN.texcoord) * IN.color;
-				return col;
+				return tex2D(_MainTex, IN.texcoord) * IN.color;
 			}
 			ENDCG
 		}

@@ -1,6 +1,6 @@
 //----------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2014 Tasharen Entertainment
+// Copyright © 2011-2016 Tasharen Entertainment
 //----------------------------------------------
 
 using UnityEngine;
@@ -304,6 +304,18 @@ public class NGUISettings
 		set { SetInt("NGUI Font Size", value); }
 	}
 
+	static public int FMSize
+	{
+		get { return GetInt("NGUI FM Size", 16); }
+		set { SetInt("NGUI FM Size", value); }
+	}
+
+	static public bool fontKerning
+	{
+		get { return GetBool("NGUI Font Kerning", true); }
+		set { SetBool("NGUI Font Kerning", value); }
+	}
+
 	static public FontStyle fontStyle
 	{
 		get { return GetEnum("NGUI Font Style", FontStyle.Normal); }
@@ -314,6 +326,18 @@ public class NGUISettings
 	{
 		get { return Get<Font>("NGUI Dynamic Font", null); }
 		set { Set("NGUI Dynamic Font", value); }
+	}
+
+	static public Font FMFont
+	{
+		get { return Get<Font>("NGUI FM Font", null); }
+		set { Set("NGUI FM Font", value); }
+	}
+
+	static public UIFont BMFont
+	{
+		get { return Get<UIFont>("NGUI BM Font", null); }
+		set { Set("NGUI BM Font", value); }
 	}
 
 	static public UILabel.Overflow overflowStyle
@@ -358,6 +382,12 @@ public class NGUISettings
 		set { SetBool("NGUI Truecolor", value); }
 	}
 
+	static public bool keepPadding
+	{
+		get { return GetBool("NGUI KeepPadding", false); }
+		set { SetBool("NGUI KeepPadding", value); }
+	}
+
 	static public bool forceSquareAtlas
 	{
 		get { return GetBool("NGUI Square", false); }
@@ -388,16 +418,31 @@ public class NGUISettings
 		set { SetString("NGUI Chars", value); }
 	}
 
-	static public string pathToFreeType
+	static public string defaultPathToFreeType
 	{
 		get
 		{
 			string path = Application.dataPath;
-			if (Application.platform == RuntimePlatform.WindowsEditor) path += "/NGUI/Editor/FreeType.dll";
-			else path += "/NGUI/Editor/FreeType.dylib";
-			return GetString("NGUI FreeType", path);
+			if (System.IntPtr.Size == 8) path = System.IO.Path.Combine(path, "NGUI/Editor/x86_64/");
+			else path = System.IO.Path.Combine(path, "NGUI/Editor/x86/");
+
+			var platform = Application.platform;
+			if (platform == RuntimePlatform.WindowsEditor) path = System.IO.Path.Combine(path, "FreeType.dll");
+			else if (platform == RuntimePlatform.OSXEditor) path = System.IO.Path.Combine(path, "FreeType.dylib");
+			return path.Replace('\\', '/');
 		}
-		set { SetString("NGUI FreeType", value); }
+	}
+
+	static public string pathToFreeType
+	{
+		get
+		{
+			string s = GetString(System.IntPtr.Size == 8 ? "NGUI FreeType64" : "NGUI FreeType", null);
+			if (string.IsNullOrEmpty(s)) s = defaultPathToFreeType;
+			else if (!System.IO.File.Exists(s)) s = defaultPathToFreeType;
+			return s;
+		}
+		set { SetString(System.IntPtr.Size == 8 ? "NGUI FreeType64" : "NGUI FreeType", value); }
 	}
 
 	static public string searchField
@@ -580,6 +625,9 @@ public class NGUISettings
 		SetInt("Font Size", lbl.fontSize);
 		SetEnum("Font Style", lbl.fontStyle);
 		SetEnum("Overflow", lbl.overflowMethod);
+		SetBool("UseFloatSpacing", lbl.useFloatSpacing);
+		SetFloat("FloatSpacingX", lbl.floatSpacingX);
+		SetFloat("FloatSpacingY", lbl.floatSpacingY);
 		SetInt("SpacingX", lbl.spacingX);
 		SetInt("SpacingY", lbl.spacingY);
 		SetInt("MaxLines", lbl.maxLineCount);
@@ -609,6 +657,7 @@ public class NGUISettings
 		sp.centerType = GetEnum<UISprite.AdvancedType>("Center Type", UISprite.AdvancedType.Sliced);
 		sp.fillAmount = GetFloat("Fill", sp.fillAmount);
 		sp.fillDirection = GetEnum<UISprite.FillDirection>("FDir", sp.fillDirection);
+		NGUITools.SetDirty(sp);
 	}
 
 	/// <summary>
@@ -637,6 +686,9 @@ public class NGUISettings
 		}
 
 		lbl.overflowMethod = GetEnum<UILabel.Overflow>("Overflow", lbl.overflowMethod);
+		lbl.useFloatSpacing = GetBool("UseFloatSpacing", lbl.useFloatSpacing);
+		lbl.floatSpacingX = GetFloat("FloatSpacingX", lbl.floatSpacingX);
+		lbl.floatSpacingY = GetFloat("FloatSpacingY", lbl.floatSpacingY);
 		lbl.spacingX = GetInt("SpacingX", lbl.spacingX);
 		lbl.spacingY = GetInt("SpacingY", lbl.spacingY);
 		lbl.maxLineCount = GetInt("MaxLines", lbl.maxLineCount);
@@ -650,5 +702,6 @@ public class NGUISettings
 		float x = GetFloat("Effect X", lbl.effectDistance.x);
 		float y = GetFloat("Effect Y", lbl.effectDistance.y);
 		lbl.effectDistance = new Vector2(x, y);
+		NGUITools.SetDirty(lbl);
 	}
 }

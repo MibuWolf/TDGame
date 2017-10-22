@@ -1,17 +1,12 @@
 //----------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2014 Tasharen Entertainment
+// Copyright © 2011-2016 Tasharen Entertainment
 //----------------------------------------------
 
 using UnityEngine;
 using UnityEditor;
 
-[CanEditMultipleObjects]
-#if UNITY_3_5
-[CustomEditor(typeof(UIWrapContent))]
-#else
 [CustomEditor(typeof(UIWrapContent), true)]
-#endif
 public class UIWrapContentEditor : Editor
 {
 	public override void OnInspectorGUI ()
@@ -53,6 +48,8 @@ public class UIWrapContentEditor : Editor
 		NGUIEditorTools.SetLabelWidth(90f);
 		if (sp1.intValue == sp2.intValue) GUILayout.Label("unlimited");
 		GUILayout.EndHorizontal();
+
+		serializedObject.DrawProperty("hideInactive");
 
 		NGUIEditorTools.DrawProperty("Cull Content", serializedObject, "cullContent");
 

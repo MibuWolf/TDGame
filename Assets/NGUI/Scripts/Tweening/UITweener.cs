@@ -1,6 +1,6 @@
 //----------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2014 Tasharen Entertainment
+// Copyright © 2011-2016 Tasharen Entertainment
 //----------------------------------------------
 
 using UnityEngine;
@@ -117,10 +117,12 @@ public abstract class UITweener : MonoBehaviour
 	{
 		get
 		{
+			if (duration == 0f) return 1000f;
+
 			if (mDuration != duration)
 			{
 				mDuration = duration;
-				mAmountPerDelta = Mathf.Abs((duration > 0f) ? 1f / duration : 1000f) * Mathf.Sign(mAmountPerDelta);
+				mAmountPerDelta = Mathf.Abs(1f / duration) * Mathf.Sign(mAmountPerDelta);
 			}
 			return mAmountPerDelta;
 		}
@@ -168,6 +170,7 @@ public abstract class UITweener : MonoBehaviour
 
 		if (!mStarted)
 		{
+			delta = 0;
 			mStarted = true;
 			mStartTime = time + delay;
 		}
@@ -175,7 +178,7 @@ public abstract class UITweener : MonoBehaviour
 		if (time < mStartTime) return;
 
 		// Advance the sampling factor
-		mFactor += amountPerDelta * delta;
+		mFactor += (duration == 0f) ? 1f : amountPerDelta * delta;
 
 		// Loop style simply resets the play factor after it exceeds 1.
 		if (style == Style.Loop)
@@ -206,13 +209,11 @@ public abstract class UITweener : MonoBehaviour
 		{
 			mFactor = Mathf.Clamp01(mFactor);
 			Sample(mFactor, true);
+			enabled = false;
 
-			// Disable this script unless the function calls above changed something
-			if (duration == 0f || (mFactor == 1f && mAmountPerDelta > 0f || mFactor == 0f && mAmountPerDelta < 0f))
-				enabled = false;
-
-			if (current == null)
+			if (current != this)
 			{
+				UITweener before = current;
 				current = this;
 
 				if (onFinished != null)
@@ -227,7 +228,7 @@ public abstract class UITweener : MonoBehaviour
 					for (int i = 0; i < mTemp.Count; ++i)
 					{
 						EventDelegate ed = mTemp[i];
-						if (ed != null) EventDelegate.Add(onFinished, ed, ed.oneShot);
+						if (ed != null && !ed.oneShot) EventDelegate.Add(onFinished, ed, ed.oneShot);
 					}
 					mTemp = null;
 				}
@@ -236,7 +237,7 @@ public abstract class UITweener : MonoBehaviour
 				if (eventReceiver != null && !string.IsNullOrEmpty(callWhenFinished))
 					eventReceiver.SendMessage(callWhenFinished, this, SendMessageOptions.DontRequireReceiver);
 
-				current = null;
+				current = before;
 			}
 		}
 		else Sample(mFactor, false);
@@ -450,7 +451,16 @@ public abstract class UITweener : MonoBehaviour
 			}
 		}
 
-		if (comp == null) comp = go.AddComponent<T>();
+		if (comp == null)
+		{
+			comp = go.AddComponent<T>();
+
+			if (comp == null)
+			{
+				Debug.LogError("Unable to add " + typeof(T) + " to " + NGUITools.GetHierarchy(go), go);
+				return null;
+			}
+		}
 #endif
 		comp.mStarted = false;
 		comp.duration = duration;
@@ -461,12 +471,6 @@ public abstract class UITweener : MonoBehaviour
 		comp.eventReceiver = null;
 		comp.callWhenFinished = null;
 		comp.enabled = true;
-
-		if (duration <= 0f)
-		{
-			comp.Sample(1f, true);
-			comp.enabled = false;
-		}
 		return comp;
 	}
 

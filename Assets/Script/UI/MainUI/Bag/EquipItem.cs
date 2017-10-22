@@ -10,6 +10,8 @@ public class EquipItem : MonoBehaviour {
     // 堆叠数
     private UILabel _lbCount;
 
+    private int equipID = -1;
+
 	void Awake ()
     {
         img = transform.Find("img").GetComponent<UISprite>();
@@ -50,8 +52,15 @@ public class EquipItem : MonoBehaviour {
         }
     }
 
-	
-	// 设置装备ID
+
+    public void OnPress(bool ispress)
+    {
+        if (ispress)
+            BagTotalUI.instance.SendMessage("onSelectEquipItem", equipID );
+    }
+
+
+    // 设置装备ID
     public void setEquip( int id )
     {
         ItemVO vo = ItemModel.instance.getBagItem(id);
@@ -60,9 +69,11 @@ public class EquipItem : MonoBehaviour {
         {
             img.spriteName = "";
             lbCount.text = "";
+            equipID = -1;
         }
         else
         {
+            equipID = id;
             img.spriteName = vo.item.icon;
             lbCount.text = vo.count.ToString();
         }
