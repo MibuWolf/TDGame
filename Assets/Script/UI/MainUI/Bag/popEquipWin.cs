@@ -66,8 +66,4 @@ public class popEquipWin : MonoBehaviour {
         bShow = false;
     }
 
-    private void OnDestroy()
-    {
-        BagTotalUI.instance.selectEquip -= onSelectEquip;
-    }
 }

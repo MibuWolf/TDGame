@@ -10,7 +10,7 @@ public class ItemModel : MonoBehaviour {
     private Dictionary<int, Item> datas = new Dictionary<int, Item>();
 
     // 当前主角所拥有的道具数据
-    private Dictionary<int,ItemVO> items = new Dictionary<int,ItemVO>();
+    private Dictionary<int,ItemVO> _items = new Dictionary<int,ItemVO>();
 
     public static ItemModel instance;
 
@@ -21,6 +21,14 @@ public class ItemModel : MonoBehaviour {
         initBag();
     }
 
+
+    public Dictionary<int,ItemVO> items
+    {
+        get
+        {
+            return _items;
+        }
+    }
 
     // 获取道具数据
     public Item getItem( int id )
@@ -66,7 +74,7 @@ public class ItemModel : MonoBehaviour {
     // 初始化拥有道具数据（应该是服务器下发）
     private void initBag()
     {
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 30; i++)
         {
             int id = Random.Range(1001, 1020);
 

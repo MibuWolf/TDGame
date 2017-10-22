@@ -15,8 +15,10 @@ public class EquipItem : MonoBehaviour {
 	void Awake ()
     {
         img = transform.Find("img").GetComponent<UISprite>();
-        lbCount = transform.Find("lbCount").GetComponent<UILabel>();	
-	}
+        lbCount = transform.Find("lbCount").GetComponent<UILabel>();
+        lbCount.text = "";
+
+    }
 
 
     public UISprite img
