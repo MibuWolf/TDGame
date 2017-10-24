@@ -64,6 +64,8 @@ public class popEquipWin : MonoBehaviour {
     {
         this.gameObject.SetActive(false);
         bShow = false;
+
+        MessageTips.instance.showMessage("关闭界面啦");
     }
 
 }
