@@ -31,16 +31,15 @@ public class BagTotalUI : MonoBehaviour {
         EventDelegate closeClick = new EventDelegate(this, "onClose");
         btnClose.onClick.Add(closeClick);
 
-        this.gameObject.SetActive(false);
     }
 
     // Use this for initialization
     void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        this.gameObject.SetActive(false);		
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 
