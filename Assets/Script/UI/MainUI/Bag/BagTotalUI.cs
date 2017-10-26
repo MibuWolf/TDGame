@@ -9,6 +9,14 @@ public class BagTotalUI : MonoBehaviour {
     // 装备详细信息
     private popEquipWin popEquip;
 
+    // 出现动画
+    private TweenPosition openTween;
+
+    // 关闭按钮
+    private UIButton btnClose;
+
+    public bool bShow = false;
+
     public delegate void onSelectEquip(int equipid);
     public event onSelectEquip selectEquip;
 
@@ -17,6 +25,13 @@ public class BagTotalUI : MonoBehaviour {
         instance = this;
 
         popEquip = transform.Find("popEquip").GetComponent<popEquipWin>();
+        openTween = transform.GetComponent<TweenPosition>();
+        btnClose = transform.Find("btnClose").GetComponent<UIButton>();
+
+        EventDelegate closeClick = new EventDelegate(this, "onClose");
+        btnClose.onClick.Add(closeClick);
+
+        this.gameObject.SetActive(false);
     }
 
     // Use this for initialization
@@ -34,4 +49,33 @@ public class BagTotalUI : MonoBehaviour {
     {
         popEquip.onSelectEquip(equipID);
     }
+
+
+    // 打开背包界面
+    public void showBag()
+    {
+        this.gameObject.SetActive(true);
+        openTween.PlayForward();
+        bShow = true;
+    }
+
+
+    // 关闭背包界面
+    public void onClose()
+    {
+        openTween.PlayReverse();
+
+        StartCoroutine(closeBag());
+    }
+
+
+    //  关闭背包界面协程
+    private IEnumerator closeBag()
+    {
+        yield return new WaitForSeconds(1);
+
+        this.gameObject.SetActive(false);
+        bShow = false;
+    }
+
 }
