@@ -14,6 +14,7 @@ public class TaskModel : MonoBehaviour {
 
     void Awake ()
     {
+        instance = this;
         init();
 	}
 
@@ -68,4 +69,27 @@ public class TaskModel : MonoBehaviour {
         return task;
 
     }
+
+
+    //  获取任务数据
+    public Task getTask(int id)
+    {
+        Task task = null;
+        bool bFind = datas.TryGetValue(id, out task);
+
+        if (bFind)
+            return task;
+
+        return null;
+
+    }
+
+
+    // 获取所有任务信息
+    public Dictionary<int, Task> getAllTask()
+    {
+        return datas;
+    }
+
+
 }
