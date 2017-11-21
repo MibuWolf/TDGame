@@ -26,13 +26,13 @@ public class MainRoleMove : MonoBehaviour {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
-        helpVec.x = h * speed;
+        helpVec.x = -h * speed;
         helpVec.y = rigBody.velocity.y;
-        helpVec.z = v * speed;
+        helpVec.z = -v * speed;
 
-        helpRot.x = h;
+        helpRot.x = -h;
         helpRot.y = 0;
-        helpRot.z = v;
+        helpRot.z = -v;
 
         rigBody.velocity = helpVec;
 

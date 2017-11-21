@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FixedCamera : MonoBehaviour {
 
-    private Vector3 fixedPos = new Vector3(0, 5, -12);
+    private Vector3 fixedPos = new Vector3(0, 5, 12);
 
     private Transform mainRole;
 	// Use this for initialization
