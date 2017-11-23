@@ -26,6 +26,9 @@ public class TaskItem : MonoBehaviour {
     // 当前任务ID
     private int taskID = -1;
 
+    //  主角
+    private GameObject _mainRole;
+
 	void Awake ()
     {
         taskType = this.transform.Find("imgTaskType").GetComponent<UISprite>();
@@ -38,7 +41,8 @@ public class TaskItem : MonoBehaviour {
         lbState = this.transform.Find("btnGo/Label").GetComponent<UILabel>();
         btnState2 = this.transform.Find("btnGet").GetComponent<UIButton>();
 
-        print("init");
+        EventDelegate evt = new EventDelegate(this, "onClickBtn");
+        btnState1.onClick.Add(evt);
     }
 
 
@@ -76,7 +80,7 @@ public class TaskItem : MonoBehaviour {
             case TaskState.NoStart:
                 {
                     btnState1.gameObject.SetActive(true);
-                    btnState1.enabled = false;
+                    btnState1.enabled = true;
                     btnState2.gameObject.SetActive(false);
                     lbState.text = "领取";
                 }
@@ -107,5 +111,41 @@ public class TaskItem : MonoBehaviour {
 
     }
 
-	
+
+    //  主角
+    private GameObject mainRole
+    {
+        get
+        {
+            if (_mainRole == null)
+            {
+                _mainRole = GameObject.FindGameObjectWithTag("Player");
+            }
+
+            return _mainRole;
+        }
+    }
+
+
+    //  点击接受按钮
+    private void onClickBtn()
+    {
+        Task task = TaskModel.instance.getTask(taskID);
+
+        if (task == null)
+            return;
+
+        if (task.CurState == TaskState.NoStart)
+        {
+            GameObject npc = NpcManager.instance.getNpc(task.NpcID);
+
+            if (npc == null)
+                return;
+
+            MoveByNavMesh moveByNav = mainRole.GetComponent<MoveByNavMesh>();
+            moveByNav.setDestination(npc.transform.position);
+        }
+    }
+
+
 }

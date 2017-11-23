@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class MoveByNavMesh : MonoBehaviour {
 
     private NavMeshAgent navMesh;
-    public Transform targetObj;
+    //public Transform targetObj;
     private Animator animator;
 
     float minDis = 1;
@@ -22,24 +22,19 @@ public class MoveByNavMesh : MonoBehaviour {
     {
         if (navMesh.enabled)
         {
-            if (navMesh.remainingDistance < minDis)
+            if (navMesh.remainingDistance < minDis && navMesh.remainingDistance != 0)
             {
                 navMesh.isStopped = true;
-                //navMesh.enabled = false;
+                navMesh.enabled = false;
                 animator.SetBool("Run", false);
             }
         
         }
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            setDestination(targetObj.position);
-        }
-
 	}
 
 
-    private void setDestination(Vector3 targetPos)
+    public void setDestination(Vector3 targetPos)
     {
         navMesh.enabled = true;
         navMesh.isStopped = false;
